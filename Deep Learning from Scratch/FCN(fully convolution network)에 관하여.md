@@ -1,6 +1,5 @@
 # FCN(fully convolution network)에 관하여
 
----
 
 <aside>
 💡 출처: [https://wikidocs.net/147359](https://wikidocs.net/147359)
@@ -16,7 +15,6 @@
 
 # **이미지 분류(image classfication)**
 
----
 
 이미지 내의 모든 픽셀에서 피쳐 추출하고,
 
@@ -24,19 +22,17 @@
 
 # **이미지 분할(Image seg.)**
 
----
 
 **이미지를 이루는 모든 픽셀들의 class를 예측하는 task**임.
 
 이미지 분류에서 쓰인 pretain 네트워크에서 feature extraction 레이어는 재활용하여 feature를 추출하고 fully connected layer(dense layer)를 버리고 1*1 conv와 up-scaling(transpose convolution)으로 변경하여 (fine tuning) 픽셀 클래스 분류의 이미지랑 같은 크기를 아웃풋으로 하도록 함.
 
-![Untitled](FCN(fully%20convolution%20network)%E1%84%8B%E1%85%A6%20%E1%84%80%E1%85%AA%E1%86%AB%E1%84%92%E1%85%A1%E1%84%8B%E1%85%A7%20f4f44bb41201472f8140bd8b3ee21c11/Untitled.png)
+![Untitled](/Deep%20Learning%20from%20Scratch/FCN/Untitled.png)
 
 → upscaling
 
 # **Fully connected layer(FC layer) 이란?(= dense layer)**
 
----
 
 CNN에서 	레이어는 크게 2가지 유형으로 나뉜다.
 
@@ -51,28 +47,26 @@ CNN에서 	레이어는 크게 2가지 유형으로 나뉜다.
 
 # **네트워크 구조**
 
----
 
-![Untitled](FCN(fully%20convolution%20network)%E1%84%8B%E1%85%A6%20%E1%84%80%E1%85%AA%E1%86%AB%E1%84%92%E1%85%A1%E1%84%8B%E1%85%A7%20f4f44bb41201472f8140bd8b3ee21c11/Untitled%201.png)
+![Untitled](/Deep%20Learning%20from%20Scratch/FCN/Untitled%201.png)
 
 1. Convolution layer로 feature 추출
 2. 1*1 convolution layer를 이용하여 feature map의 채널수를 데이터셋의 객체수(# of instance)와 동일하게 변경 (class presence heat map 추출)
 3. Up-sampling: 낮은 해상도의 heat map을 upsampling(=transposed convolution) 하고, 입력 이미지와 같은 크기의 map 생성
 4. 최종 피처 맵과 라벨 피처맵의 차이를 이용하여 네트워크 학습
 
-![Untitled](FCN(fully%20convolution%20network)%E1%84%8B%E1%85%A6%20%E1%84%80%E1%85%AA%E1%86%AB%E1%84%92%E1%85%A1%E1%84%8B%E1%85%A7%20f4f44bb41201472f8140bd8b3ee21c11/Untitled%202.png)
+![Untitled](/Deep%20Learning%20from%20Scratch/FCN/Untitled%202.png)
 
 마지막 7*7 피처 맵의 한 픽셀은 기존 인풋 이미지의 32*32 pixel을 대표하게 되는데, 이를 업샘플링하는 과정에서 기존 이미지의 정보가 손실될 수 있다.(뭉그러짐 문제) 따라서 업샘플링을 할 때 피처 추출 단계의 피처맵도 업샘플링에 포함(sum)하여 정보 손실을 막는 방법을 사용함.(**skip architecture, 이는 파라미터의 큰 증가 없이 성능을 비약적으로 향상시킴**)
 
 어느 단계의 피처추출단계까지를 반영하느냐에 따라 정확도가 달라진다.(초기의 피처추출단계부터 고려할수록 img. Seg. 정확도가 높아진다.)
 
-![Untitled](FCN(fully%20convolution%20network)%E1%84%8B%E1%85%A6%20%E1%84%80%E1%85%AA%E1%86%AB%E1%84%92%E1%85%A1%E1%84%8B%E1%85%A7%20f4f44bb41201472f8140bd8b3ee21c11/Untitled%203.png)
+![Untitled](/Deep%20Learning%20from%20Scratch/FCN/Untitled%203.png)
 
 이미지 분할을 하는 fcn은 이미지 분류 모델을 사용하기에, 이미지 분류 모델이 발달할수록, 이미지 분할 모델의 성능이 향상됨.(이미지 분류 네트워크에서 추출하는 피쳐를 이미지 분할에서도 수정없이 사용가능하기 때문)
 
 # **FC layer를 삭제함으로써 이미지 분할을 구현함**
 
----
 
 FC layer를 이용하여 이미지 분할을 하는 것은 적합하지 않음.
 
@@ -87,7 +81,6 @@ FC layer를 이용하여 이미지 분할을 하는 것은 적합하지 않음.
 
 # **FCN에서는 deconvolution을 사용하는가 아님 transposed convolution을 사용하는가?**
 
----
 
 같은 개념으로 사용하는 경향이 있는듯, convolution의 역연산을 deconvolution이라고 하는데, 그 역연산 안에 transposed convolution이 포함되는 듯
 
@@ -95,7 +88,7 @@ FC layer를 이용하여 이미지 분할을 하는 것은 적합하지 않음.
 
 # **사용할 하이퍼파라미터(?, 손 대볼곳)**
 
----
+
 
 - 인코더와 디코더 구조(얼마나 복잡하게 만들것인지, 무슨 방식 사용할 것인지)
 - CNN 기반 모델 뭘 채택할지 (CNN의 파라미터들)
