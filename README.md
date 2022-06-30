@@ -13,7 +13,7 @@
 # 기존 딥러닝 사전 지식
 
 
-[활성화 함수/Loss Function에 관하여]()
+[활성화 함수/Loss Function에 관하여](/Deep%20Learning%20from%20Scratch/%ED%99%9C%EC%84%B1%ED%99%94%20%ED%95%A8%EC%88%98%20Loss%20Function%EC%97%90%20%EA%B4%80%ED%95%98%EC%97%AC.md)
 
 [optimizer에 관하여](/Deep%20Learning%20from%20Scratch/optimizer%EC%97%90%20%EA%B4%80%ED%95%98%EC%97%AC.md)
 
