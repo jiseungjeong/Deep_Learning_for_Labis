@@ -33,3 +33,5 @@
 
 
 [Git 활용편 요약](/Deep%20Learning%20from%20Scratch/Git%20%ED%99%9C%EC%9A%A9%ED%8E%B8%20%EC%9A%94%EC%95%BD.md)
+
+[Git/Github Workflow에 관하여](/Deep%20Learning%20from%20Scratch/Git%20Github%20Workflow%EC%97%90%20%EA%B4%80%ED%95%98%EC%97%AC%20ec50fb3e678f4fbfa6b08bce1827c0e3.md)
