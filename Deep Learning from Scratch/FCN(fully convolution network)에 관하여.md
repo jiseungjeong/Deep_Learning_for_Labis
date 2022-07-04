@@ -84,14 +84,78 @@ FC layer를 이용하여 이미지 분할을 하는 것은 적합하지 않음.
 
 같은 개념으로 사용하는 경향이 있는듯, convolution의 역연산을 deconvolution이라고 하는데, 그 역연산 안에 transposed convolution이 포함되는 듯
 
-[https://gaussian37.github.io/vision-segmentation-fcn/](https://gaussian37.github.io/vision-segmentation-fcn/) fcn pytorch로 구현
+[https://gaussian37.github.io/vision-segmentation-fcn/](https://gaussian37.github.io/vision-segmentation-fcn/) fcn pytorch로 구현(한글)
 
-# **사용할 하이퍼파라미터(?, 손 대볼곳)**
+https://github.com/divamgupta/image-segmentation-keras → fcn 기반 모델들을 구현해놓은 라이브러리
 
+[https://github.com/divamgupta/image-segmentation-keras/blob/master/keras_segmentation/models/fcn.py](https://github.com/divamgupta/image-segmentation-keras/blob/master/keras_segmentation/models/fcn.py) → 위 라이브러리에서 구현한 fcn 모델 전체 코드
 
+# 하이퍼 파라미터란?
+
+모델을 쓸 때 사용자가 직접 설정하는 값(최적의 값이 없으며 경험 법칙으로 결정되는 경우가 많다.)이다. 반면 파라미터는 모델 혹은 데이터에 의해 결정된다.
+
+# **사용할 하이퍼파라미터/ 손 대볼곳**
+
+[https://github.com/pytorch/vision/blob/bf843c664b8ba0ff49d2921237500c77d82f2d04/torchvision/models/segmentation/fcn.py#L9](https://github.com/pytorch/vision/blob/bf843c664b8ba0ff49d2921237500c77d82f2d04/torchvision/models/segmentation/fcn.py#L9) → Fully Convolutional Networks for Semantic Seg.(CVPR 2015) 논문 FCN 모델 파이썬 코드
+
+```python
+from torch import nn
+
+from ._utils import _SimpleSegmentationModel
+
+__all__ = ["FCN"]
+
+class FCN(_SimpleSegmentationModel):
+    """
+    Implements a Fully-Convolutional Network for semantic segmentation.
+
+    Arguments:
+        backbone (nn.Module): the network used to compute the features for the model.
+            The backbone should return an OrderedDict[Tensor], with the key being
+            "out" for the last feature map used, and "aux" if an auxiliary classifier
+            is used.
+        classifier (nn.Module): module that takes the "out" element returned from
+            the backbone and returns a dense prediction.
+        aux_classifier (nn.Module, optional): auxiliary classifier used during training
+    """
+    pass
+
+class FCNHead(nn.Sequential):
+    def __init__(self, in_channels, channels):
+        inter_channels = in_channels // 4
+        layers = [
+            nn.Conv2d(in_channels, inter_channels, 3, padding=1, bias=False),
+            nn.BatchNorm2d(inter_channels),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Conv2d(inter_channels, channels, 1)
+        ]
+# in_channels -(with filter size 3)-> in_channels//4 -(with_filter size 1)->1
+# ->up-sampling
+        super(FCNHead, self).__init__(*layers) #부모 클래스(nn.Sequential) 호출 및 초기화
+```
 
 - 인코더와 디코더 구조(얼마나 복잡하게 만들것인지, 무슨 방식 사용할 것인지)
-- CNN 기반 모델 뭘 채택할지 (CNN의 파라미터들)
-- Skip architecture()
+    - up-sampling 방안(일반적으로는 transpose convolution을 쓰는 듯)
+    - CNN 기반 모델 뭘 채택할지 (+CNN의 파라미터들)
+    - Skip architecture
 - Data augmentation(데이터에 따른 augmentation 방식)
--
+- 분류할 클래스 수
+- 입력 이미지 픽셀 크기
+- batch normalization 비율
+- 이미지 크롭 여부
+
+<aside>
+💡 아마 이번 창업팀에서 찾으라는 FCN 모델은 초기 FCN모델을 기반으로 변형된 것까지 포함하는 개념으로 보임. 직접 활용을 하기 위한 모델을 찾는 것이 중요한데, 만약 우리가 초기 FCN 모델만 찾는다면 활용 학습보다는 이론 학습에 더 가깝기 때문.
+
+</aside>
+
+# 내가 생각하는 FCN의 특징 이란?
+
+기존 CNN 모델에 마지막 dense 층을 빼고 1*1 컨볼루션 레이어와 up-sampling 구조를 넣은 것으로 기존 인풋과 같은 크기의 아웃풋을 내놓는다. 주로 이미지 분할에 사용된다. 
+
+<aside>
+💡 하고 싶은 질문
+1. 지금 하고자 하는 task가 image segmentation인가, 혹은 instance segmentation인가(미래 방향성을 설립하는데 중요한 질문임.)
+
+</aside>
