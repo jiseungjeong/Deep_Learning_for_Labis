@@ -159,3 +159,9 @@ class FCNHead(nn.Sequential):
 1. 지금 하고자 하는 task가 image segmentation인가, 혹은 instance segmentation인가(미래 방향성을 설립하는데 중요한 질문임.)
 
 </aside>
+
+# 원본 이미지와 Label된 이미지 데이터
+
+[https://www.kaggle.com/code/vanvalkenberg/image-segmentation-u-net-for-self-driving-cars/data](https://www.kaggle.com/code/vanvalkenberg/image-segmentation-u-net-for-self-driving-cars/data) → Cambridge labeled data
+
+[https://www.kaggle.com/code/sgorl1234/image-segmentation-for-self-driving-cars/data](https://www.kaggle.com/code/sgorl1234/image-segmentation-for-self-driving-cars/data) →원본과 label이 합쳐져 있음(cityscapes_data)
