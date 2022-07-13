@@ -1,4 +1,4 @@
-# Deep Learning from Scratch
+# Deep Learning for Labis
 
 
 > 문제는 지적인 기계가 어떤 감정을 가질 수 있느냐가 아니라, **기계가 아무런 감정 없이 지능을 가질 수 있느냐 하는 것이다. -** 마빈 민스키, 1986, 전 MIT 교수, MIT 인공지능 연구소의 공동 창립자 -
